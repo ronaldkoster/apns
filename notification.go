@@ -104,7 +104,7 @@ type Payload struct {
 	// MDM for mobile device management
 	MDM          string
 	customValues map[string]interface{}
-	WriteLock    *sync.RWMutex
+	WriteLock    sync.RWMutex
 }
 
 func (p *Payload) MarshalJSON() ([]byte, error) {
