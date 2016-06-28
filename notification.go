@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -103,9 +104,12 @@ type Payload struct {
 	// MDM for mobile device management
 	MDM          string
 	customValues map[string]interface{}
+	WriteLock    *sync.RWMutex
 }
 
 func (p *Payload) MarshalJSON() ([]byte, error) {
+	p.WriteLock.Lock()
+	defer p.WriteLock.Unlock()
 	if len(p.MDM) != 0 {
 		p.customValues["mdm"] = p.MDM
 	} else {
